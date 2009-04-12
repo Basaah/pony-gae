@@ -1,5 +1,12 @@
 require 'java'
 
+
+# Author::    Bas Wilbers  (mailto:baswilbers@gmail.com)
+# Copyright:: Copyright (c) 2009 Bas Wilbers
+# License::   MIT License
+
+
+
 module Pony
 	module MS
 	  import com.google.appengine.api.mail.MailServiceFactory 
@@ -7,15 +14,20 @@ module Pony
 	  Service = MailServiceFactory.mail_service
 	end
 	
+	
+	#Send out an email.
 	def self.mail(options)
 	  raise(ArgumentError, ":to is required") unless options[:to]
 		raise(ArgumentError, ":from is required") unless options[:from]
 		MS::Service.send build_gae_mail(options)
 	end
+	
+	#Email all the admins.
 	def self.mail_to_admins(options)
 		MS::Service.sendToAdmins build_gae_mail(options)
 	end
 
+  
 	def self.build_gae_mail(options)
 	  mail = MS::MailService::Message.new
 		mail.setTo(options[:to].to_a)
